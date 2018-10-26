@@ -48,4 +48,11 @@ contract Campaign {
         return (msg.value, cBalance);
     }
 
+    function getBalance()
+    public
+    view
+    returns(uint) {
+        return address(this).balance;
+    }
+
 }
