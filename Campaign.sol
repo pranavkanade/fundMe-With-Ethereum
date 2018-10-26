@@ -4,6 +4,7 @@ contract Campaign {
     address public cManager;
     string public cDescription;
     uint public cBalance;
+    uint public cMinAllowedDonation;
     mapping(address => bool) private cDonors;
 
     // This is to find out if the memory limit of the used datatype
@@ -23,9 +24,15 @@ contract Campaign {
         _;
     }
 
-    constructor(string desc) public {
+    modifier onlyIfMoreThanMinDonation {
+        require(cMinAllowedDonation <= msg.value, "Sender has not met the min donation requirement");
+        _;
+    }
+
+    constructor(string desc, uint minDonation) public {
         cManager = msg.sender;
         cDescription = desc;
+        cMinAllowedDonation = minDonation;
         cBalance = 0;
     }
 
@@ -33,6 +40,7 @@ contract Campaign {
     public
     payable
     notOverflowing ()
+    onlyIfMoreThanMinDonation()
     returns(uint amtDonated, uint totalBalanace)
     {
         cDonors[msg.sender] = true;
