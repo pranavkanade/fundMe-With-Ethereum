@@ -28,4 +28,16 @@ contract Campaign {
         cDescription = desc;
         cBalance = 0;
     }
+
+    function donateToCampaign()
+    public
+    payable
+    notOverflowing ()
+    returns(uint amtDonated, uint totalBalanace)
+    {
+        cDonors[msg.sender] = true;
+        cBalance += msg.value;
+        return (msg.value, cBalance);
+    }
+
 }
