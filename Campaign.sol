@@ -7,6 +7,7 @@ contract Campaign {
     uint public cMinAllowedDonation;
     mapping(address => bool) private cDonors;
     uint public cDonorCount;
+    uint public cSpendingRequestsCount;
     SpendingRequest[] public cSpendingRequests;
 
     struct SpendingRequest {
@@ -45,7 +46,7 @@ contract Campaign {
     }
 
     modifier onlyIfFundsAvailable (uint amount) {
-        require(address(this).balance >= amount, "Sufficient funds not available.");
+        require(address(this).balance >= amount, "Campaign does not have sufficient funds to process this spending request");
         _;
     }
 
@@ -55,6 +56,7 @@ contract Campaign {
         cMinAllowedDonation = minDonation;
         cBalance = 0;
         cDonorCount = 0;
+        cSpendingRequestsCount = 0;
     }
 
     function donateToCampaign()
@@ -78,4 +80,19 @@ contract Campaign {
         return address(this).balance;
     }
 
+    function raiseSpendingRequest(string desc, uint amount)
+    public
+    onlyManager()
+    onlyIfFundsAvailable(amount)
+    returns(uint) {
+        cSpendingRequestsCount +=1;
+        SpendingRequest memory newSepndingReq = SpendingRequest({
+            srAmount:amount,
+            srDescription: desc,
+            srYayCount: 0,
+            srApprovalResponseCount: 0
+        });
+        cSpendingRequests.push(newSepndingReq);
+        return cSpendingRequestsCount;
+    }
 }
