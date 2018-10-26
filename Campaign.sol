@@ -6,6 +6,16 @@ contract Campaign {
     uint public cBalance;
     uint public cMinAllowedDonation;
     mapping(address => bool) private cDonors;
+    uint public cDonorCount;
+    SpendingRequest[] public cSpendingRequests;
+
+    struct SpendingRequest {
+        uint srAmount;
+        string srDescription;
+        mapping(address => bool) srApprovers;
+        uint srYayCount; // to find out how many support
+        uint srApprovalResponseCount;
+    }
 
     // This is to find out if the memory limit of the used datatype
     // is reaching to the level of overflow.
@@ -39,6 +49,7 @@ contract Campaign {
         cDescription = desc;
         cMinAllowedDonation = minDonation;
         cBalance = 0;
+        cDonorCount = 0;
     }
 
     function donateToCampaign()
@@ -50,6 +61,7 @@ contract Campaign {
     returns(uint amtDonated, uint totalBalanace)
     {
         cDonors[msg.sender] = true;
+        cDonorCount += 1;
         cBalance += msg.value;
         return (msg.value, cBalance);
     }
