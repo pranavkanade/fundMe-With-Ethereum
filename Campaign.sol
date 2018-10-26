@@ -44,6 +44,11 @@ contract Campaign {
         _;
     }
 
+    modifier onlyIfFundsAvailable (uint amount) {
+        require(address(this).balance >= amount, "Sufficient funds not available.");
+        _;
+    }
+
     constructor(string desc, uint minDonation) public {
         cManager = msg.sender;
         cDescription = desc;
