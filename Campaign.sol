@@ -29,6 +29,11 @@ contract Campaign {
         _;
     }
 
+    modifier onlyIfAtleastHasMoneyTryingToDonate {
+        require(msg.sender.balance >= msg.value, "Sender does not have sufficient funds");
+        _;
+    }
+
     constructor(string desc, uint minDonation) public {
         cManager = msg.sender;
         cDescription = desc;
@@ -41,6 +46,7 @@ contract Campaign {
     payable
     notOverflowing ()
     onlyIfMoreThanMinDonation()
+    onlyIfAtleastHasMoneyTryingToDonate()
     returns(uint amtDonated, uint totalBalanace)
     {
         cDonors[msg.sender] = true;
