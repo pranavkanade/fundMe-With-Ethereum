@@ -10,10 +10,13 @@ contract Campaign {
     uint public cSpendingRequestsCount;
     SpendingRequest[] public cSpendingRequests;
 
+    enum votingStatus { NOTVOTED, YAY, NAY }
+
     struct SpendingRequest {
+        uint srId;
         uint srAmount;
         string srDescription;
-        mapping(address => bool) srApprovers;
+        mapping(address => votingStatus) srApprovers;
         uint srYayCount; // to find out how many support
         uint srApprovalResponseCount;
     }
@@ -47,6 +50,28 @@ contract Campaign {
 
     modifier onlyIfFundsAvailable (uint amount) {
         require(address(this).balance >= amount, "Campaign does not have sufficient funds to process this spending request");
+        _;
+    }
+
+    // @NOTE: for vote - [0: NotVoted, 1: Yay, 2: Nay]
+    modifier onlyIfNotVotedPreviously
+    (uint requestId) {
+        votingStatus status = cSpendingRequests[requestId].srApprovers[msg.sender];
+        require(status == votingStatus.NOTVOTED, "You have already voted.");
+        _;
+    }
+
+    // This modifier may not make sense here but,
+    // checking twice never goes to waste.
+    modifier onlyIfValidVotingOption
+    (uint vote) {
+        require(vote == 1 || vote == 2, "Please vote out of valid options.");
+        _;
+    }
+
+    modifier onlyIfValidRequestId
+    (uint requestId) {
+        require(requestId < cSpendingRequestsCount, "Please select valid spending request.");
         _;
     }
 
@@ -85,14 +110,29 @@ contract Campaign {
     onlyManager()
     onlyIfFundsAvailable(amount)
     returns(uint) {
-        cSpendingRequestsCount +=1;
         SpendingRequest memory newSepndingReq = SpendingRequest({
+            srId:cSpendingRequestsCount,
             srAmount:amount,
             srDescription: desc,
             srYayCount: 0,
             srApprovalResponseCount: 0
         });
+        cSpendingRequestsCount++;
         cSpendingRequests.push(newSepndingReq);
-        return cSpendingRequestsCount;
+        return newSepndingReq.srId;
+    }
+
+    // Consider - not voting is equivalent to disapproving
+    function voteOnSpendingRequest(uint requestId, uint vote)
+    public
+    onlyDonor() onlyIfValidRequestId(requestId) onlyIfNotVotedPreviously(requestId) onlyIfValidVotingOption(vote)
+    returns(uint responseCount, uint yayCount) {
+        cSpendingRequests[requestId].srApprovalResponseCount++;
+        cSpendingRequests[requestId].srApprovers[msg.sender] = votingStatus(vote);
+        if (votingStatus(vote) == votingStatus.YAY) {
+            cSpendingRequests[requestId].srYayCount++;
+        }
+        return (cSpendingRequests[requestId].srApprovalResponseCount,
+                cSpendingRequests[requestId].srYayCount);
     }
 }
