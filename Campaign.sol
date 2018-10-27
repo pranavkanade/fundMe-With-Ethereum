@@ -19,6 +19,7 @@ contract Campaign {
         mapping(address => votingStatus) srApprovers;
         uint srYayCount; // to find out how many support
         uint srApprovalResponseCount;
+        bool srIsFinalized;
     }
 
     // This is to find out if the memory limit of the used datatype
@@ -75,6 +76,21 @@ contract Campaign {
         _;
     }
 
+    modifier onlyIfApproved
+    (uint requestId) {
+        // put a cut off of 51%
+        // require(cSpendingRequests[requestId].srYayCount > (0.51*cDonorCount));
+        require(cSpendingRequests[requestId].srYayCount * 2 > cDonorCount, "You do not have cumulative approval to finalize the request.");
+        _;
+    }
+
+    modifier onlyIfNotFinalizedYet
+    (uint requestId) {
+        require(cSpendingRequests[requestId].srIsFinalized == false,
+                "The request you are trying to operate on has already been approved");
+        _;
+    }
+
     constructor(string desc, uint minDonation) public {
         cManager = msg.sender;
         cDescription = desc;
@@ -115,7 +131,8 @@ contract Campaign {
             srAmount:amount,
             srDescription: desc,
             srYayCount: 0,
-            srApprovalResponseCount: 0
+            srApprovalResponseCount: 0,
+            srIsFinalized: false
         });
         cSpendingRequestsCount++;
         cSpendingRequests.push(newSepndingReq);
@@ -125,7 +142,7 @@ contract Campaign {
     // Consider - not voting is equivalent to disapproving
     function voteOnSpendingRequest(uint requestId, uint vote)
     public
-    onlyDonor() onlyIfValidRequestId(requestId) onlyIfNotVotedPreviously(requestId) onlyIfValidVotingOption(vote)
+    onlyDonor() onlyIfValidRequestId(requestId) onlyIfNotVotedPreviously(requestId) onlyIfValidVotingOption(vote) onlyIfNotFinalizedYet(requestId)
     returns(uint responseCount, uint yayCount) {
         cSpendingRequests[requestId].srApprovalResponseCount++;
         cSpendingRequests[requestId].srApprovers[msg.sender] = votingStatus(vote);
@@ -134,5 +151,16 @@ contract Campaign {
         }
         return (cSpendingRequests[requestId].srApprovalResponseCount,
                 cSpendingRequests[requestId].srYayCount);
+    }
+
+    function finalizeSpendingRequest(uint requestId)
+    public
+    onlyManager() onlyIfApproved(requestId) onlyIfNotFinalizedYet(requestId)
+    returns(bool isApproved) {
+        msg.sender.transfer(cSpendingRequests[requestId].srAmount);
+        cBalance -= cSpendingRequests[requestId].srAmount;
+        require(cBalance == address(this).balance, "The balance after transfer was not equal. Reverting transaction! Please check the history.");
+        cSpendingRequests[requestId].srIsFinalized = true;
+        return cSpendingRequests[requestId].srIsFinalized;
     }
 }
