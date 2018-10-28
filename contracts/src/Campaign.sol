@@ -1,4 +1,16 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
+
+contract FactoryCampaign {
+    address[] public campaignsList;
+
+    // need function to start a new campaign
+    function startCampaign(string desc, uint minAmt)
+    public returns ( address ) {
+        address newCampaign = new Campaign(desc, minAmt, msg.sender);
+        campaignsList.push(newCampaign);
+        return newCampaign;
+    }
+}
 
 contract Campaign {
     address public cManager;
