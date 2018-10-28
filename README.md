@@ -22,3 +22,10 @@ const provider = ganache.provider(options);
 // https://github.com/trufflesuite/ganache-cli#using-ganache-cli
 const web3 = new Web3(provider);
 ```
+
+## Testing
+1) Campaign starter is marked as manager.
+2) Allows donation
+3) Sets the donor in `cDonors` in contract.
+    In this case we may need to access the `cDonors` mapping. This can be done using the function `cDonors` which takes `address` as input and returns `bool` which states if that `address` is donor or not.
+4) Requires min contribution. #138
