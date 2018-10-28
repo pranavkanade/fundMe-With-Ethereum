@@ -32,3 +32,5 @@ const web3 = new Web3(provider);
 3) Sets the donor in `cDonors` in contract.
     In this case we may need to access the `cDonors` mapping. This can be done using the function `cDonors` which takes `address` as input and returns `bool` which states if that `address` is donor or not.
 4) Requires min contribution. #138
+
+## Address of the factory contract - `0x524E0151DFbbf32a446BF55e2A13b9918C7dB6e9`
