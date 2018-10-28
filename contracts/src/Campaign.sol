@@ -4,11 +4,14 @@ contract FactoryCampaign {
     address[] public campaignsList;
 
     // need function to start a new campaign
+    // we can't actually return from the function
+    // which processes the transaction.
+    // the information that we recieve
+    // is like given in file - samples/transactionFunctionOutput.txt
     function startCampaign(string desc, uint minAmt)
-    public returns ( address ) {
+    public {
         address newCampaign = new Campaign(desc, minAmt, msg.sender);
         campaignsList.push(newCampaign);
-        return newCampaign;
     }
 
     function getDeployedContracts()
