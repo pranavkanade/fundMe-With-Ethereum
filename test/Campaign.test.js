@@ -42,10 +42,22 @@ describe('FactoryCampaign', () => {
     it('Gets Deployed', () => {
         assert.ok(factory.options.address);
     });
+
+    it('Can deploy Campaign contract', () => {
+        assert.ok(campaign.options.address);
+    });
 });
 
 describe('Campaign', () => {
-    it('Gets Deployed', () => {
-        assert.ok(campaign.options.address);
+    it('Allows donation to campaign', async () => {
+        await campaign.methods.donateToCampaign()
+            .send({
+                from: accounts[1],
+                gas: '1000000',
+                value: '200'
+            });
+        let balance = await campaign.methods.getBalance().call();
+        // console.log(balance);
+        assert(balance == 200);
     });
 });
