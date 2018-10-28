@@ -103,8 +103,8 @@ contract Campaign {
         _;
     }
 
-    constructor(string desc, uint minDonation) public {
-        cManager = msg.sender;
+    constructor(string desc, uint minDonation, address manager) public {
+        cManager = manager;
         cDescription = desc;
         cMinAllowedDonation = minDonation;
         cBalance = 0;
@@ -169,7 +169,7 @@ contract Campaign {
     public
     onlyManager() onlyIfApproved(requestId) onlyIfNotFinalizedYet(requestId)
     returns(bool isApproved) {
-        msg.sender.transfer(cSpendingRequests[requestId].srAmount);
+        cManager.transfer(cSpendingRequests[requestId].srAmount);
         cBalance -= cSpendingRequests[requestId].srAmount;
         require(cBalance == address(this).balance, "The balance after transfer was not equal. Reverting transaction! Please check the history.");
         cSpendingRequests[requestId].srIsFinalized = true;
