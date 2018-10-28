@@ -10,6 +10,11 @@ contract FactoryCampaign {
         campaignsList.push(newCampaign);
         return newCampaign;
     }
+
+    function getDeployedContracts()
+    public view returns (address []) {
+        return campaignsList;
+    }
 }
 
 contract Campaign {
