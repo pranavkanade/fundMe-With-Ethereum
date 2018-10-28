@@ -183,4 +183,6 @@ contract Campaign {
         cSpendingRequests[requestId].srIsFinalized = true;
         return cSpendingRequests[requestId].srIsFinalized;
     }
+
+    // TODO: Find if the spending request got rejected
 }
