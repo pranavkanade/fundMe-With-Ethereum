@@ -60,4 +60,44 @@ describe('Campaign', () => {
         // console.log(balance);
         assert(balance == 200);
     });
+
+    it('Lets manager raise spending request', async () => {
+        await campaign.methods.donateToCampaign()
+            .send({
+                from: accounts[1],
+                gas: '1000000',
+                value: '200'
+            });
+        await campaign.methods.donateToCampaign()
+            .send({
+                from: accounts[2],
+                gas: '1000000',
+                value: '200'
+            });
+        await campaign.methods.donateToCampaign()
+            .send({
+                from: accounts[3],
+                gas: '1000000',
+                value: '200'
+            });
+        // raise a spending request
+        await campaign.methods.raiseSpendingRequest(
+            "Spending request test - 1",
+            '300'
+        ).send({
+            from: accounts[0],
+            gas: '1000000',
+        });
+
+        await campaign.methods.raiseSpendingRequest(
+            "Spending request test - 2",
+            '300'
+        ).send({
+            from: accounts[0],
+            gas: '1000000',
+        });
+        let srCount = await campaign.methods.cSpendingRequestsCount().call();
+
+        assert(srCount == 2);
+    });
 });
