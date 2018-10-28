@@ -6,8 +6,11 @@ I am trying to eliminate how kickstarter might get scammed.
 The simplistic approach is to let the manager of the campaign
 raise request for releasing funds for all the major expences.
 
+## TODOs -
+- [ ] Find if spending request has got rejected.
+- [ ] Build a logic to restrict any descision making before some threshold is reached. e.g. rejection/approval of spending request before 75% of donors vote.
 
-## Issues -
+## Issues one might enounter-
 
 * [ganache hits gas limit](https://ethereum.stackexchange.com/questions/46957/solidity-exceeds-block-gas-limit-during-mocha-tests-with-ganache-cli)
 
