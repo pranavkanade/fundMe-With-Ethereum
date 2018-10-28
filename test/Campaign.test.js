@@ -212,5 +212,7 @@ describe('Campaign', () => {
         const fundsInCampaignAfter = await web3.eth.getBalance(campaignAddress);
 
         assert((fundsInCampaignBefore - fundsInCampaignAfter) == 300);
+
+        // TODO: assert this test on amount of ether transfered to the manager, contribute more amt. use - web3.utils.toWei('10', 'ether')
     });
 });
