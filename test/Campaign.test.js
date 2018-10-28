@@ -86,7 +86,7 @@ describe('Campaign', () => {
             '300'
         ).send({
             from: accounts[0],
-            gas: '1000000',
+            gas: '1000000'
         });
 
         await campaign.methods.raiseSpendingRequest(
@@ -94,7 +94,7 @@ describe('Campaign', () => {
             '300'
         ).send({
             from: accounts[0],
-            gas: '1000000',
+            gas: '1000000'
         });
         let srCount = await campaign.methods.cSpendingRequestsCount().call();
 
