@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import factory from '../contracts/factory';
 
 class CampaignIndex extends Component {
-    async componentDidMount() {
+    // this runs every time the next server renders the JSX
+    static async getInitialProps() {
         const campaigns = await factory.methods.getDeployedContracts().call();
-        console.log(campaigns);
+        return { campaigns };
     }
 
     render() {
-        return <div>Campaign Index!</div>
+        return <div>{this.props.campaigns[0]}</div>
     }
 }
 
