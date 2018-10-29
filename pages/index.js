@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import factory from '../contracts/factory';
-import { Card } from 'semantic-ui-react'
+import { Card, Button, Grid } from 'semantic-ui-react'
 
 class CampaignIndex extends Component {
     // this runs every time the next server renders the JSX
@@ -22,10 +22,22 @@ class CampaignIndex extends Component {
     }
 
     render() {
-        return <div>
-            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"></link>
-            {this.renderCampaigns()}
-        </div>;
+        return (
+            <div>
+                <h3>Open Campaign</h3>
+                <Grid columns='equal'>
+                    <Grid.Column width={1}>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"></link>
+                        {this.renderCampaigns()}
+                    </Grid.Column>
+                    <Grid.Column width={4}>
+                        <Button content='Create Campaign' icon='add' labelPosition='right' primary/>
+                    </Grid.Column>
+                </Grid>
+            </div>
+        );
     }
 }
 
