@@ -28,8 +28,7 @@ class CampaignIndex extends Component {
                 <div>
                     <h3>Open Campaign</h3>
                     <Grid columns='equal'>
-                        <Grid.Column width={1}>
-                        </Grid.Column>
+
                         <Grid.Column>
                             <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"></link>
                             {this.renderCampaigns()}
