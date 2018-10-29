@@ -30,7 +30,6 @@ class CampaignIndex extends Component {
                     <Grid columns='equal'>
 
                         <Grid.Column>
-                            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"></link>
                             {this.renderCampaigns()}
                         </Grid.Column>
                         <Grid.Column width={4}>
