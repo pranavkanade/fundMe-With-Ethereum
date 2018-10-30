@@ -9,12 +9,13 @@ class CampaignNew extends Component {
     state = {
         description: '',
         minContib: '',
-        errMessage: ''
+        errMessage: '',
+        loading: false
     };
 
     onSubmit = async (event) => {
         event.preventDefault(); // keeps browser from submit form
-
+        this.setState({ loading: true, errMessage: '' });
         try {
             const accounts = await web3.eth.getAccounts();
             await factory.methods
@@ -25,6 +26,7 @@ class CampaignNew extends Component {
         } catch (err) {
             this.setState({ errMessage: err.message });
         }
+        this.setState({ loading: false, description: '', minContib: '' });
     }
 
     render () {
@@ -49,7 +51,7 @@ class CampaignNew extends Component {
                     />
                     </Form.Field>
                     <Message error header="Oops!" content={this.state.errMessage} />
-                    <Button primary>Create!</Button>
+                    <Button loading={ this.state.loading } primary>Create!</Button>
                 </Form>
             </Layout>
         );
