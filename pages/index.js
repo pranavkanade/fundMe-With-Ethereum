@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import factory from '../contracts/factory';
 import { Card, Button, Grid } from 'semantic-ui-react'
 import Layout from '../components/Layout'
+import { Link } from '../routes';
 
 class CampaignIndex extends Component {
     // this runs every time the next server renders the JSX
@@ -33,7 +34,11 @@ class CampaignIndex extends Component {
                             {this.renderCampaigns()}
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Button content='Create Campaign' icon='add' labelPosition='right' primary/>
+                        <Link route="/campaigns/new">
+                            <a>
+                                <Button content='Create Campaign' icon='add' labelPosition='right' primary/>
+                            </a>
+                        </Link>
                         </Grid.Column>
                     </Grid>
                 </div>
