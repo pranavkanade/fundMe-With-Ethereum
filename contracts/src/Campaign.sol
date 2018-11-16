@@ -15,7 +15,7 @@ contract FactoryCampaign {
     }
 
     function getDeployedContracts()
-    public view returns (address []) {
+    public view returns (address[]) {
         return campaignsList;
     }
 }
@@ -106,8 +106,10 @@ contract Campaign {
 
     modifier onlyIfNotFinalizedYet
     (uint requestId) {
-        require(cSpendingRequests[requestId].srIsFinalized == false,
-                "The request you are trying to operate on has already been approved");
+        require(
+            cSpendingRequests[requestId].srIsFinalized == false,
+            "The request you are trying to operate on has already been approved"
+        );
         _;
     }
 
@@ -162,15 +164,21 @@ contract Campaign {
     // Consider - not voting is equivalent to disapproving
     function voteOnSpendingRequest(uint requestId, uint vote)
     public
-    onlyDonor() onlyIfValidRequestId(requestId) onlyIfNotVotedPreviously(requestId) onlyIfValidVotingOption(vote) onlyIfNotFinalizedYet(requestId)
+    onlyDonor()
+    onlyIfValidRequestId(requestId)
+    onlyIfNotVotedPreviously(requestId)
+    onlyIfValidVotingOption(vote)
+    onlyIfNotFinalizedYet(requestId)
     returns(uint responseCount, uint yayCount) {
         cSpendingRequests[requestId].srApprovalResponseCount++;
         cSpendingRequests[requestId].srApprovers[msg.sender] = votingStatus(vote);
         if (votingStatus(vote) == votingStatus.YAY) {
             cSpendingRequests[requestId].srYayCount++;
         }
-        return (cSpendingRequests[requestId].srApprovalResponseCount,
-                cSpendingRequests[requestId].srYayCount);
+        return (
+            cSpendingRequests[requestId].srApprovalResponseCount,
+            cSpendingRequests[requestId].srYayCount
+        );
     }
 
     function finalizeSpendingRequest(uint requestId)
