@@ -1,36 +1,41 @@
 import React, { Component } from "react";
 import Layout from "../../components/Layouts";
-import { Form, Button, Input } from "semantic-ui-react";
+import { Form, Button, Input, Message } from "semantic-ui-react";
 import factoryInstance from "./../../contracts/factory";
 import web3 from "./../../contracts/web3";
 
 class CampaignNew extends Component {
   state = {
     newCampaignDescription: "",
-    newCampaignMinContribution: ""
+    newCampaignMinContribution: "",
+    errMessage: ""
   };
 
   onSubmit = async () => {
     // this has to be done
-    await web3.currentProvider.enable();
+    try {
+      await web3.currentProvider.enable();
 
-    let accounts = await web3.eth.getAccounts();
+      let accounts = await web3.eth.getAccounts();
 
-    await factoryInstance.methods
-      .startCampaign(
-        this.state.newCampaignDescription,
-        this.state.newCampaignMinContribution
-      )
-      .send({
-        from: accounts[0]
-      });
+      await factoryInstance.methods
+        .startCampaign(
+          this.state.newCampaignDescription,
+          this.state.newCampaignMinContribution
+        )
+        .send({
+          from: accounts[0]
+        });
+    } catch (err) {
+      this.setState({ errMessage: err.message });
+    }
   };
 
   render() {
     return (
       <Layout>
         <h3>Create new Campaign!</h3>
-        <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
           <Form.Field>
             <label>Description</label>
             <Input
@@ -55,6 +60,7 @@ class CampaignNew extends Component {
               }}
             />
           </Form.Field>
+          <Message error header="Sorry :(" content={this.state.errMessage} />
           <Button type="submit" primary>
             Create!
           </Button>
