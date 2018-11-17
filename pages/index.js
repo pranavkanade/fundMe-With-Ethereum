@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import factoryInstance from "./../contracts/factory";
-import { Card, Button } from "semantic-ui-react";
+import { Card, Button, Grid } from "semantic-ui-react";
+import Layout from "../components/Layouts";
 
 class CampaignIndex extends Component {
   async componentDidMount() {
@@ -36,19 +37,31 @@ class CampaignIndex extends Component {
 
   render() {
     return (
-      <div>
-        <link
-          rel="stylesheet"
-          href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"
-        />
-        {this.renderCampaignsList()}
-        <Button
-          content="Create Campaign"
-          icon="add circle"
-          labelPosition="right"
-          primary
-        />
-      </div>
+      <Layout>
+        <div>
+          <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"
+          />
+          <h3>Open Campaigns</h3>
+          <Grid columns="equal">
+            <Grid.Column width={12}>
+              <Grid.Row stretched>
+                <Grid.Column>{this.renderCampaignsList()}</Grid.Column>
+              </Grid.Row>
+            </Grid.Column>
+            <Grid.Column>
+              <Button
+                floated="right"
+                content="Create Campaign"
+                icon="add circle"
+                labelPosition="right"
+                primary
+              />
+            </Grid.Column>
+          </Grid>
+        </div>
+      </Layout>
     );
   }
 }
