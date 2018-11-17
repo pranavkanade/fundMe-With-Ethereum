@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import factoryInstance from "./../contracts/factory";
 import { Card, Button, Grid } from "semantic-ui-react";
 import Layout from "../components/Layouts";
+import { Link } from "./../routes";
 
 class CampaignIndex extends Component {
   async componentDidMount() {
@@ -48,13 +49,17 @@ class CampaignIndex extends Component {
               </Grid.Row>
             </Grid.Column>
             <Grid.Column>
-              <Button
-                floated="right"
-                content="Create Campaign"
-                icon="add circle"
-                labelPosition="right"
-                primary
-              />
+              <Link route="/campaigns/new">
+                <a>
+                  <Button
+                    floated="right"
+                    content="Create Campaign"
+                    icon="add circle"
+                    labelPosition="right"
+                    primary
+                  />
+                </a>
+              </Link>
             </Grid.Column>
           </Grid>
         </div>
