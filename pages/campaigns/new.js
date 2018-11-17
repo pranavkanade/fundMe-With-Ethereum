@@ -3,6 +3,7 @@ import Layout from "../../components/Layouts";
 import { Form, Button, Input, Message } from "semantic-ui-react";
 import factoryInstance from "./../../contracts/factory";
 import web3 from "./../../contracts/web3";
+import { Link, Router } from "./../../routes";
 
 class CampaignNew extends Component {
   state = {
@@ -30,6 +31,7 @@ class CampaignNew extends Component {
         .send({
           from: accounts[0]
         });
+      Router.pushRoute("/");
     } catch (err) {
       this.setState({ errMessage: err.message });
     }

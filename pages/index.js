@@ -28,8 +28,9 @@ class CampaignIndex extends Component {
       return {
         header: address,
         description: "this is test",
-        link: <a>visit campaign</a>,
-        fluid: true
+        href: "localhost:3000",
+        fluid: true,
+        link: true
       };
     });
     return <Card.Group items={campaignsList} />;
