@@ -8,11 +8,15 @@ class CampaignNew extends Component {
   state = {
     newCampaignDescription: "",
     newCampaignMinContribution: "",
-    errMessage: ""
+    errMessage: "",
+    loading: false
   };
 
-  onSubmit = async () => {
+  onSubmit = async event => {
+    event.preventDefault();
     // this has to be done
+    this.setState({ loading: true });
+    this.setState({ errMessage: "" });
     try {
       await web3.currentProvider.enable();
 
@@ -29,6 +33,8 @@ class CampaignNew extends Component {
     } catch (err) {
       this.setState({ errMessage: err.message });
     }
+
+    this.setState({ loading: false });
   };
 
   render() {
@@ -61,7 +67,7 @@ class CampaignNew extends Component {
             />
           </Form.Field>
           <Message error header="Sorry :(" content={this.state.errMessage} />
-          <Button type="submit" primary>
+          <Button type="submit" primary loading={this.state.loading}>
             Create!
           </Button>
         </Form>
