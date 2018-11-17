@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import factoryInstance from "./../contracts/factory";
-import { Card } from "semantic-ui-react";
+import { Card, Button, Icon } from "semantic-ui-react";
 
 class CampaignIndex extends Component {
   async componentDidMount() {
@@ -42,6 +42,10 @@ class CampaignIndex extends Component {
           href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"
         />
         {this.renderCampaignsList()}
+        <Button icon labelPosition="right" primary>
+          Create Campaign
+          <Icon name="add circle" />
+        </Button>
       </div>
     );
   }
