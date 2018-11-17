@@ -1,15 +1,29 @@
 import React, { Component } from "react";
 import Layout from "../../components/Layouts";
 import { Form, Button, Input } from "semantic-ui-react";
+import factoryInstance from "./../../contracts/factory";
+import web3 from "./../../contracts/web3";
+
 class CampaignNew extends Component {
   state = {
     newCampaignDescription: "",
     newCampaignMinContribution: ""
   };
 
-  onSubmit = () => {
-    console.log("Desc : ", this.state.newCampaignDescription);
-    console.log("Min Contrib : ", this.state.newCampaignMinContribution);
+  onSubmit = async () => {
+    // this has to be done
+    await web3.currentProvider.enable();
+
+    let accounts = await web3.eth.getAccounts();
+
+    await factoryInstance.methods
+      .startCampaign(
+        this.state.newCampaignDescription,
+        this.state.newCampaignMinContribution
+      )
+      .send({
+        from: accounts[0]
+      });
   };
 
   render() {
