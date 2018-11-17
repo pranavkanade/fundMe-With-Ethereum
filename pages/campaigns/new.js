@@ -1,22 +1,48 @@
 import React, { Component } from "react";
 import Layout from "../../components/Layouts";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Input } from "semantic-ui-react";
 class CampaignNew extends Component {
+  state = {
+    newCampaignDescription: "",
+    newCampaignMinContribution: ""
+  };
+
+  onSubmit = () => {
+    console.log("Desc : ", this.state.newCampaignDescription);
+    console.log("Min Contrib : ", this.state.newCampaignMinContribution);
+  };
+
   render() {
     return (
       <Layout>
         <h3>Create new Campaign!</h3>
-        <Form>
+        <Form onSubmit={this.onSubmit}>
           <Form.Field>
             <label>Description</label>
-            <input placeholder="Fund me to change the world !" />
+            <Input
+              placeholder="Fund me to change the world !"
+              value={this.state.newCampaignDescription}
+              onChange={event => {
+                this.setState({ newCampaignDescription: event.target.value });
+              }}
+            />
           </Form.Field>
           <Form.Field>
             <label>Minimum Allowed Contribution</label>
-            <input placeholder="1 ether" />
+            <Input
+              label="wei"
+              placeholder="1000"
+              labelPosition="right"
+              value={this.state.newCampaignMinContribution}
+              onChange={event => {
+                this.setState({
+                  newCampaignMinContribution: event.target.value
+                });
+              }}
+            />
           </Form.Field>
           <Button type="submit" primary>
-            Create
+            Create!
           </Button>
         </Form>
       </Layout>
