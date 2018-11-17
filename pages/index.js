@@ -6,7 +6,6 @@ class CampaignIndex extends Component {
     const campaigns = await factoryInstance.methods
       .getDeployedContracts()
       .call();
-
     console.log(campaigns);
   }
 
