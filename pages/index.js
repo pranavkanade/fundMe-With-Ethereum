@@ -1,5 +1,18 @@
-import React from "react";
+import React, { Component } from "react";
+import factoryInstance from "./../contracts/factory";
 
-export default () => {
-  return <h1>This is index page</h1>;
-};
+class CampaignIndex extends Component {
+  async componentDidMount() {
+    const campaigns = await factoryInstance.methods
+      .getDeployedContracts()
+      .call();
+
+    console.log(campaigns);
+  }
+
+  render() {
+    return <h1>Campaign Index!</h1>;
+  }
+}
+
+export default CampaignIndex;
