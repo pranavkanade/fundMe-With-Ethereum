@@ -183,13 +183,41 @@ contract Campaign {
 
     function finalizeSpendingRequest(uint requestId)
     public
-    onlyManager() onlyIfApproved(requestId) onlyIfNotFinalizedYet(requestId)
+    onlyManager()
+    onlyIfApproved(requestId)
+    onlyIfNotFinalizedYet(requestId)
     returns(bool isApproved) {
         cManager.transfer(cSpendingRequests[requestId].srAmount);
         cBalance -= cSpendingRequests[requestId].srAmount;
         require(cBalance == address(this).balance, "The balance after transfer was not equal. Reverting transaction! Please check the history.");
         cSpendingRequests[requestId].srIsFinalized = true;
         return cSpendingRequests[requestId].srIsFinalized;
+    }
+
+    function getCampaignSummary()
+    public view returns(address, string, uint, uint, uint, uint) {
+        return (
+            cManager,
+            cDescription,
+            cMinAllowedDonation,
+            cBalance,
+            cDonorCount,
+            cSpendingRequestsCount
+        );
+    }
+
+    function getSpendingRequestSummary(uint srId)
+    public view
+    onlyIfValidRequestId(srId)
+    returns(uint, uint, string, uint, uint, bool) {
+        return (
+                cSpendingRequests[srId].srId,
+                cSpendingRequests[srId].srAmount,
+                cSpendingRequests[srId].srDescription,
+                cSpendingRequests[srId].srYayCount,
+                cSpendingRequests[srId].srApprovalResponseCount,
+                cSpendingRequests[srId].srIsFinalized
+        );
     }
 
     // TODO: Find if the spending request got rejected
