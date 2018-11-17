@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import factoryInstance from "./../contracts/factory";
+import { Card } from "semantic-ui-react";
 
 class CampaignIndex extends Component {
   async componentDidMount() {
@@ -21,8 +22,28 @@ class CampaignIndex extends Component {
     return { campaigns };
   }
 
+  renderCampaignsList() {
+    const campaignsList = this.props.campaigns.map(address => {
+      return {
+        header: address,
+        description: "this is test",
+        link: <a>visit campaign</a>,
+        fluid: true
+      };
+    });
+    return <Card.Group items={campaignsList} />;
+  }
+
   render() {
-    return <div>{this.props.campaigns[0]}</div>;
+    return (
+      <div>
+        <link
+          rel="stylesheet"
+          href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css"
+        />
+        {this.renderCampaignsList()}
+      </div>
+    );
   }
 }
 
