@@ -29,7 +29,7 @@ class CampaignIndex extends Component {
       return {
         header: address,
         description: "this is test",
-        href: "localhost:3000",
+        href: `/campaigns/${address}`,
         fluid: true,
         link: true
       };
