@@ -9,9 +9,11 @@ import {
   Form,
   Input,
   Button,
-  Message
+  Message,
+  Divider
 } from "semantic-ui-react";
 import web3 from "./../../contracts/web3";
+import { Link } from "./../../routes";
 
 class CampaignShow extends Component {
   state = {
@@ -91,7 +93,10 @@ class CampaignShow extends Component {
         header: this.props.cSrCount,
         description:
           "Number of spending requests initiated by the manager of the campaign.",
-        meta: "Spending Requests"
+        meta: "Spending Requests",
+        link: true,
+        color: "red",
+        href: "/campaigns/" + this.props.cAddress + "/requests"
       }
     ];
     return <Card.Group items={items} />;
@@ -114,6 +119,20 @@ class CampaignShow extends Component {
               <Grid.Column width={10}>
                 <Grid.Row stretched>
                   <Grid.Column>{this.renderSummary()}</Grid.Column>
+                  <Divider hidden />
+                  <Link
+                    route={`/campaigns/${this.props.cAddress}/requests/new`}
+                  >
+                    <a>
+                      <Button
+                        floated="left"
+                        content="create spending request"
+                        icon="money bill alternate"
+                        labelPosition="right"
+                        primary
+                      />
+                    </a>
+                  </Link>
                 </Grid.Row>
               </Grid.Column>
               <Grid.Column>
