@@ -13,9 +13,6 @@ class CampaignViewAllSpendingRequest extends Component {
     try {
       const campaign = Campaign(address);
       let srCount = await campaign.methods.cSpendingRequestsCount().call();
-      const srIds = [...Array(Number(srCount)).keys()];
-      const sum = await campaign.methods.getSpendingRequestSummary(0).call();
-      console.log(typeof sum);
       let listSRSummary = [];
       for (let i = 0; i < srCount; i++) {
         let sum_temp = await campaign.methods
@@ -45,7 +42,6 @@ class CampaignViewAllSpendingRequest extends Component {
   }
 
   renderSpendingReqs() {
-    console.log(this.props.listSRSummary);
     const srList = this.props.listSRSummary.map(object => {
       return {
         header: object.desc,
